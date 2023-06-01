@@ -1,0 +1,11 @@
+{
+    "compilerOptions": { // This section defines the options for the TypeScript compiler.
+        "jsx":"react", // This specifies that the project is using JSX syntax for React components.
+        "module":"es6",// This indicates that the project is using ES6 modules for module resolution.
+        "target":"es6",//This specifies that the compiled JavaScript code should be compatible with ECMAScript 6.
+        "moduleResolution": "node", // This setting tells the compiler to resolve module imports using Node.js resolution algorithm.
+        "esModuleInterop": true //This enables compatibility with libraries and tools that use the CommonJS module format.
+    },
+    "include": ["src/**/*.ts","src/**/*.tsx"], //This defines the files that should be included in the compilation process. It uses glob patterns to match TypeScript files (.ts) and TypeScript with JSX files (.tsx) in the "src" directory and its subdirectories.
+    "exclude":["node_modules"] //This specifies the directories or files that should be excluded from the compilation. In this case, it excludes the "node_modules" directory, which typically contains external dependencies that don't need to be compiled.
+}
