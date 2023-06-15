@@ -1,16 +1,14 @@
 const path = require('path') // The path module is imported using the require function. This module is used to work with file and directory paths.
 const CopyPlugin = require('copy-webpack-plugin')
 const HtmlPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
   // The configuration object is exported as a module using module.exports.
-  mode: 'development', // The mode property is set to 'development'. This tells webpack to create a development bundle with additional features like source maps and debugging information. Other possible values for mode are 'production' and 'none'.
-  devtool: 'cheap-module-source-map',
   entry: {
     popup: path.resolve('/src/popup/popup.tsx'),
     options: path.resolve('src/options/options.tsx'),
     background: path.resolve('src/background/background.ts'),
-    contentScript: path.resolve('src/contentScript/contentScript.ts')
-
+    contentScript: path.resolve('src/contentScript/contentScript.ts'),
   }, //tells webpack where to start, The entry property specifies the entry point of the application. In this case, it is set to './src/test.tsx', indicating that the application starts from the test.tsx file located in the src directory.
   module: {
     //define additional rules, by default they only handle simple files like js and json files, inorder to handle like ts files we need another loader, The module property is used to define additional rules for handling different types of files.
@@ -22,16 +20,19 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        use: ['style-loader','css-loader'],
+        use: ['style-loader', 'css-loader'],
         test: /\.css$/i,
       },
       {
-        type:'asset/resource',
+        type: 'asset/resource',
         test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
-      }
+      },
     ],
   },
   plugins: [
+    new CleanWebpackPlugin({
+      cleanStaleWebpackAssets: false,
+    }),
     new CopyPlugin({
       patterns: [
         {
@@ -52,10 +53,10 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   optimization: {
-    splitChunks:{
-        chunks:'all',
+    splitChunks: {
+      chunks: 'all',
     },
-  }
+  },
 }
 
 //Overall, this configuration sets up webpack to bundle the application starting from the test.tsx file, transpile TypeScript files using ts-loader, and output the bundled file as 'index.js' in the dist directory.
@@ -63,7 +64,7 @@ module.exports = {
 function getHtmlPlugins(chunks) {
   return chunks.map(
     (chunk) =>
-      new HtmlPlugin({ 
+      new HtmlPlugin({
         title: 'React Extension',
         filename: `${chunk}.html`,
         chunks: [chunk],
