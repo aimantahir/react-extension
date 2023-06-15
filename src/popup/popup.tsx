@@ -8,12 +8,12 @@
 
 // ReactDOM.render(test,root) //Finally, the ReactDOM.render function is called to render the test JSX expression inside the root element. This function takes two arguments: the JSX expression to be rendered (test) and the DOM element where it should be rendered (root).
 import React from 'react'
-import { createRoot } from 'react-dom/client'
+import ReactDOM from 'react-dom'
 import './popup.css'
 
-const test = <img src="icon.png"/>
+const test = <img src='icon.png'/>
+
 const root = document.createElement('div')
 document.body.appendChild(root)
+ReactDOM.render(test,root)
 
-const rootElement = createRoot(root)
-rootElement.render(test)

@@ -8,6 +8,9 @@ module.exports = {
   entry: {
     popup: path.resolve('/src/popup/popup.tsx'),
     options: path.resolve('src/options/options.tsx'),
+    background: path.resolve('src/background/background.ts'),
+    contentScript: path.resolve('src/contentScript/contentScript.ts')
+
   }, //tells webpack where to start, The entry property specifies the entry point of the application. In this case, it is set to './src/test.tsx', indicating that the application starts from the test.tsx file located in the src directory.
   module: {
     //define additional rules, by default they only handle simple files like js and json files, inorder to handle like ts files we need another loader, The module property is used to define additional rules for handling different types of files.
