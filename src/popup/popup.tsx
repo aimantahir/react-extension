@@ -36,35 +36,34 @@ const App: React.FC<{}> = () => {
   };
 
   const handleTempScaleButtonClick = () => {
-    const updateOptions: LocalStorageOptions = {
-      ...options,
-      tempScale: options.tempScale === 'metric' ? 'imperial' : 'metric',
+    if (options) {
+      const updateOptions: LocalStorageOptions = {
+        ...options,
+        tempScale: options.tempScale === 'metric' ? 'imperial' : 'metric',
+      };
+      setStoredOptions(updateOptions).then(() => {
+        setOptions(updateOptions);
+      });
     }
-    setStoredOptions(updateOptions).then(()=>{
-      setOptions(updateOptions)
-    })
-  }
-  if (!options) {
-    return null;
-  }
+  };
 
   const handleCityDeleteButtonClick = (index: number) => {
-    cities.splice(index, 1);
-    const updatedCities = [...cities];
+    const updatedCities = cities.filter((_, i) => i !== index);
     setStoredCities(updatedCities).then(() => {
       setCities(updatedCities);
     });
   };
 
   const handleOverlayButtonClick = () => {
-    chrome.tabs.query({
-      active:true,
-    },(tabs)=>{
-      if(tabs.length > 0){
-        chrome.tabs.sendMessage(tabs[0].id,Messages.TOGGLE_OVERLAY)
+    chrome.tabs.query({ active: true }, (tabs) => {
+      if (tabs.length > 0) {
+        chrome.tabs.sendMessage(tabs[0].id, Messages.TOGGLE_OVERLAY);
       }
-    })
+    });
+  };
 
+  if (!options) {
+    return null;
   }
 
   return (
@@ -98,18 +97,16 @@ const App: React.FC<{}> = () => {
         <Grid item>
           <Paper>
             <Box py="4px">
-              <PictureInPictureIcon onClick={handleOverlayButtonClick}>
-                {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
-              </PictureInPictureIcon>
+              <IconButton onClick={handleOverlayButtonClick}>
+                <PictureInPictureIcon />
+              </IconButton>
             </Box>
           </Paper>
         </Grid>
       </Grid>
-      {
-        options.homeCity != '' &&
-        <WeatherCard city={options.homeCity} tempScale={options.tempScale}/>
-      }
-
+      {options.homeCity !== '' && (
+        <WeatherCard city={options.homeCity} tempScale={options.tempScale} />
+      )}
       {cities.map((city, index) => (
         <WeatherCard
           tempScale={options.tempScale}

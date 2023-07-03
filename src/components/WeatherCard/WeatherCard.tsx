@@ -5,9 +5,11 @@ import {
   Card,
   CardContent,
   CardActions,
+  Grid,
   Typography,
 } from '@material-ui/core';
 import {
+  getWeatherIconSrc,
   fetchOpenWeatherData,
   OpenWeatherData,
   OpenWeatherTempScale,
@@ -66,13 +68,27 @@ const WeatherCard: React.FC<{
   }
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography className="weatherCard-title">{weatherData.name}</Typography>
-      <Typography variant="body1">
-        {Math.round(weatherData.main.temp)}
-      </Typography>
-      <Typography className="weatherCard-body">
-        Feels like: {Math.round(weatherData.main.feels_like)}
-      </Typography>
+      <Grid container justifyContent='space-around'>
+        <Grid item>
+          <Typography className="weatherCard-title">
+            {weatherData.name}
+          </Typography>
+          <Typography className="weatherCard-temp">
+            {Math.round(weatherData.main.temp)}
+          </Typography>
+          <Typography className="weatherCard-body">
+            Feels like {Math.round(weatherData.main.feels_like)}
+          </Typography>
+        </Grid>
+        <Grid item>
+          {weatherData.weather.length > 0 && (
+            <>
+              <img src={getWeatherIconSrc(weatherData.weather[0].icon)} />
+              <Typography className="weatherCard-body"></Typography>
+            </>
+          )}
+        </Grid>
+      </Grid>
     </WeatherCardContainer>
   );
 };
